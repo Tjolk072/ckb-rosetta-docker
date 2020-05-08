@@ -2,7 +2,7 @@ FROM golang:1.14.2-buster as goBuiler
 LABEL maintainer="Xueping Yang <xueping.yang@gmail.com>"
 RUN git clone https://github.com/ququzone/ckb-coinbase-sdk.git /ckb-coinbase-sdk
 RUN cd /ckb-coinbase-sdk; \
-    git checkout v0.1.0; \
+    git checkout v0.1.1; \
     go mod download; \
     cd server; \
     go build .
@@ -84,6 +84,8 @@ EXPOSE 8114
 EXPOSE 8115
 ## indexer port
 EXPOSE 8116
+## rosetta port
+EXPOSE 8080
 ## nginx port
 EXPOSE 8117
 
