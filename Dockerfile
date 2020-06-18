@@ -51,6 +51,7 @@ RUN git clone https://github.com/quake/ckb-indexer.git /ckb-indexer
 RUN cd /ckb-indexer; \
     git checkout v0.1.1; \
     cargo build --release
+RUN git clone https://github.com/ququzone/ckb-coinbase-docker-config.git /ckb-coinbase-docker-config
 
 FROM nginx:1.16
 LABEL maintainer="Xueping Yang <xueping.yang@gmail.com>"
@@ -62,9 +63,9 @@ RUN apt-get update; \
         software-properties-common
 
 ## CKB node
-RUN wget https://github.com/nervosnetwork/ckb/releases/download/v0.30.2/ckb_v0.30.2_x86_64-unknown-linux-gnu.tar.gz -O /tmp/ckb_v0.30.2_x86_64-unknown-linux-gnu.tar.gz
-RUN cd /tmp && tar xzf ckb_v0.30.2_x86_64-unknown-linux-gnu.tar.gz
-RUN cp /tmp/ckb_v0.30.2_x86_64-unknown-linux-gnu/ckb /bin/ckb
+RUN wget https://github.com/nervosnetwork/ckb/releases/download/v0.32.0/ckb_v0.32.0_x86_64-unknown-linux-gnu.tar.gz -O /tmp/ckb_v0.32.0_x86_64-unknown-linux-gnu.tar.gz
+RUN cd /tmp && tar xzf ckb_v0.32.0_x86_64-unknown-linux-gnu.tar.gz
+RUN cp /tmp/ckb_v0.32.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
 
 ## goreman
 RUN mkdir /tmp/goreman && wget https://github.com/mattn/goreman/releases/download/v0.3.4/goreman_linux_amd64.zip -O /tmp/goreman/goreman_linux_amd64.zip
@@ -76,7 +77,7 @@ RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.
 RUN dpkg -i /tmp/dumb-init.deb
 
 ## clean
-RUN rm -rf /tmp/ckb_v0.30.2_x86_64-unknown-linux-gnu/ckb /tmp/goreman /tmp/dumb-init.deb
+RUN rm -rf /tmp/ckb_v0.32.0_x86_64-unknown-linux-gnu/ckb /tmp/goreman /tmp/dumb-init.deb
 RUN apt-get -y remove wget unzip software-properties-common && apt-get -y autoremove && apt-get clean
 
 ## CKB network port
@@ -92,15 +93,12 @@ EXPOSE 8117
 RUN mkdir /data
 RUN mkdir /conf
 
-RUN git clone https://github.com/ququzone/ckb-coinbase-docker-config.git /ckb-coinbase-docker-config
-RUN cp /ckb-coinbase-docker-config/nginx.conf /conf/nginx.conf
-RUN cp /ckb-coinbase-docker-config/setup.sh /setup.sh
-RUN cp /ckb-coinbase-docker-config/Procfile /conf/Procfile
-RUN cp /ckb-coinbase-docker-config/config.yaml /config.yaml
-RUN rm -rf /ckb-coinbase-docker-config
-
 COPY --from=goBuiler /ckb-coinbase-sdk/server/server /usr/local/bin/ckb-coinbase-sdk
 COPY --from=builder /ckb-indexer/target/release/ckb-indexer /usr/local/bin/ckb-indexer
+COPY --from=builder /ckb-coinbase-docker-config/nginx.conf /conf/nginx.conf
+COPY --from=builder /ckb-coinbase-docker-config/setup.sh /setup.sh
+COPY --from=builder /ckb-coinbase-docker-config/Procfile /conf/Procfile
+COPY --from=builder /ckb-coinbase-docker-config/config.yaml /config.yaml
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 CMD ["bash", "-c", "/setup.sh && exec goreman -set-ports=false -exit-on-error -f /conf/Procfile start"]
