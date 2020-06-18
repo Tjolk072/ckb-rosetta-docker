@@ -8,15 +8,15 @@ ckb-coinbase-docker
 ### Local build
 
 ```bash
-docker build -t ckb-rich-node .
-docker run --name ckb-rich-node -d -p 8117:8117 -v "$PWD/data":/data ckb-rich-node
+docker build -t ckb-coinbase-docker .
+docker run --name ckb-coinbase-docker -d -p 8117:8117 -v "$PWD/data":/data ckb-coinbase-docker
 ```
 
 ### Pull from DockerHub
 
 ```
-docker pull ququzone/ckb-rich-node
-docker run --name ckb-rich-node -d -p 8117:8117 -v "$PWD/data":/data ququzone/ckb-rich-node
+docker pull ququzone/ckb-coinbase-docker
+docker run --name ckb-coinbase-docker -d -p 8117:8117 -v "$PWD/data":/data ququzone/ckb-coinbase-docker
 ```
 
 ### CKB node RPC
