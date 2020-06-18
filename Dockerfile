@@ -92,10 +92,13 @@ EXPOSE 8117
 RUN mkdir /data
 RUN mkdir /conf
 
-COPY nginx.conf /conf/nginx.conf
-COPY setup.sh /setup.sh
-COPY Procfile /conf/Procfile
-COPY config.yaml /config.yaml
+
+RUN git clone https://github.com/ququzone/ckb-coinbase-docker-config.git /ckb-coinbase-docker-config
+RUN cp /ckb-coinbase-docker-config/nginx.conf /conf/nginx.conf
+RUN cp /ckb-coinbase-docker-config/setup.sh /setup.sh
+RUN cp /ckb-coinbase-docker-config/Procfile /conf/Procfile
+RUN cp /ckb-coinbase-docker-config/config.yaml /config.yaml
+RUN rm -rf /ckb-coinbase-docker-config
 
 COPY --from=goBuiler /ckb-coinbase-sdk/server/server /usr/local/bin/ckb-coinbase-sdk
 COPY --from=builder /ckb-indexer/target/release/ckb-indexer /usr/local/bin/ckb-indexer
