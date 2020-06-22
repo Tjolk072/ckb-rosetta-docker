@@ -2,7 +2,7 @@ FROM golang:1.14.2-buster as goBuiler
 LABEL maintainer="Xueping Yang <xueping.yang@gmail.com>"
 RUN git clone https://github.com/ququzone/ckb-coinbase-sdk.git /ckb-coinbase-sdk
 RUN cd /ckb-coinbase-sdk; \
-    git checkout v0.1.3; \
+    git checkout v0.1.4; \
     go mod download; \
     cd server; \
     go build .
@@ -63,9 +63,9 @@ RUN apt-get update; \
         software-properties-common
 
 ## CKB node
-RUN wget https://github.com/nervosnetwork/ckb/releases/download/v0.32.0/ckb_v0.32.0_x86_64-unknown-linux-gnu.tar.gz -O /tmp/ckb_v0.32.0_x86_64-unknown-linux-gnu.tar.gz
-RUN cd /tmp && tar xzf ckb_v0.32.0_x86_64-unknown-linux-gnu.tar.gz
-RUN cp /tmp/ckb_v0.32.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
+RUN wget https://github.com/nervosnetwork/ckb/releases/download/v0.33.0/ckb_v0.33.0_x86_64-unknown-linux-gnu.tar.gz -O /tmp/ckb_v0.33.0_x86_64-unknown-linux-gnu.tar.gz
+RUN cd /tmp && tar xzf ckb_v0.33.0_x86_64-unknown-linux-gnu.tar.gz
+RUN cp /tmp/ckb_v0.33.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
 
 ## goreman
 RUN mkdir /tmp/goreman && wget https://github.com/mattn/goreman/releases/download/v0.3.4/goreman_linux_amd64.zip -O /tmp/goreman/goreman_linux_amd64.zip
@@ -77,7 +77,7 @@ RUN wget https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.
 RUN dpkg -i /tmp/dumb-init.deb
 
 ## clean
-RUN rm -rf /tmp/ckb_v0.32.0_x86_64-unknown-linux-gnu/ckb /tmp/goreman /tmp/dumb-init.deb
+RUN rm -rf /tmp/ckb_v0.33.0_x86_64-unknown-linux-gnu/ckb /tmp/goreman /tmp/dumb-init.deb
 RUN apt-get -y remove wget unzip software-properties-common && apt-get -y autoremove && apt-get clean
 
 ## CKB network port
