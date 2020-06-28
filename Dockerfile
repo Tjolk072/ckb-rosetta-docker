@@ -2,7 +2,7 @@ FROM golang:1.14.2-buster as goBuiler
 LABEL maintainer="Xueping Yang <xueping.yang@gmail.com>"
 RUN git clone https://github.com/ququzone/ckb-coinbase-sdk.git /ckb-coinbase-sdk
 RUN cd /ckb-coinbase-sdk; \
-    git checkout v0.1.6; \
+    git checkout v0.1.7; \
     go mod download; \
     cd server; \
     go build .
