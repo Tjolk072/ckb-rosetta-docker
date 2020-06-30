@@ -2,7 +2,7 @@ FROM golang:1.14.2-buster as goBuiler
 LABEL maintainer="Xueping Yang <xueping.yang@gmail.com>"
 RUN git clone https://github.com/ququzone/ckb-coinbase-sdk.git /ckb-coinbase-sdk
 RUN cd /ckb-coinbase-sdk; \
-    git checkout v0.1.7; \
+    git checkout v0.1.8; \
     go mod download; \
     cd server; \
     go build .
@@ -49,7 +49,7 @@ RUN set -eux; \
 
 RUN git clone https://github.com/quake/ckb-indexer.git /ckb-indexer
 RUN cd /ckb-indexer; \
-    git checkout v0.1.1; \
+    git checkout v0.1.2; \
     cargo build --release
 RUN git clone https://github.com/ququzone/ckb-coinbase-docker-config.git /ckb-coinbase-docker-config
 
