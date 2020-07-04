@@ -49,7 +49,7 @@ RUN set -eux; \
 
 RUN git clone https://github.com/quake/ckb-indexer.git /ckb-indexer
 RUN cd /ckb-indexer; \
-    git checkout v0.1.3; \
+    git checkout v0.1.4; \
     cargo build --release
 RUN git clone https://github.com/ququzone/ckb-coinbase-docker-config.git /ckb-coinbase-docker-config
 
