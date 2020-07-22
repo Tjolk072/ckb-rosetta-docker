@@ -70,3 +70,18 @@ http://localhost:8117/rosetta
 
 Example code can be refer [ckb-coinbase-sdk](https://github.com/ququzone/ckb-coinbase-sdk/blob/master/client/example.go)
 
+### Check by rosetta-cli
+
+- Install rosetta-cli
+
+```
+go get github.com/coinbase/rosetta-cli
+```
+
+- Check
+
+```
+docker run --name ckb-coinbase-docker -d -p 8117:8117 -v "$PWD/data":/data ququzone/ckb-coinbase-docker
+rosetta-cli check --server-url=http://localhost:8117/rosetta --inactive-reconciliation-frequency=1 --lookup-balance-by-block=false --inactive-reconciliation-concurrency=64
+```
+
